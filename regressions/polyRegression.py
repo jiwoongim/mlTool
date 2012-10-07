@@ -40,14 +40,48 @@ def evalPolynomReg(K, xt, w):
     return yt;
 
 
+def run(xTrain, yTrain, tTrain, xTest, yTest, tTest, K):
+
+    kList = [3]#kList = range(1,8);
+    errorTrain = [0]*len(kList);
+    errorTest = [0]*len(kList);
+    K = 4;
+    #for K in kList:
+    w = polyRegression(K, xTrain, yTrain);  #weight computed
+
+    #evaluating train
+    oTrain = evalPolynomReg(K, xTrain, w);  
+    #errorTrain[0] = np.linalg.norm(np.array(yTrain)-oTrain);
+    print "Euclidean error distance for train: "
+    print np.linalg.norm(np.array(yTrain)-oTrain);
+ 
+    #evaluating test
+    oTest = evalPolynomReg(K, xTest, w);
+    #errorTest[0] = np.linalg.norm(np.array(oTest) -yTest);
+    print "Euclidean error distance for test: "
+    print np.linalg.norm(np.array(oTest) -yTest);    
+
+
+    pl.figure(1);
+    t = pl.plot(xTrain, yTrain, 'go', label="train data");
+    o = pl.plot(xTrain, oTrain, 'ro-', label="predicted data");
+    pl.legend((t, o), ("target", "predicted"));
+    pl.title('Polynomial Regression train set with degree ' + str(K-1));
+
+    pl.figure(2);
+    t = pl.plot(xTest, yTest, 'go', label="test data");
+    o = pl.plot(xTest, oTest, 'ro', label="predicted");
+    pl.legend();
+    pl.title('Polynomial Regression test set with degree ' + str(K-1));
 
 if __name__ == '__main__':
 
     #data
-    [X, Y, T] = dt.sample_poly3(30);
+    [X, Y, T] = dt.sample_poly3(60);
     [xTrain, yTrain, tTrain, xTest, yTest, tTest] = util.sepTrainTest4Reg(20,10,\
             X,T,Y);
 
+    polyRegFlag = True;
     if polyRegFlag :   
 
         kList = [3]#kList = range(1,8);
@@ -66,20 +100,20 @@ if __name__ == '__main__':
         errorTest[0] = np.linalg.norm(np.array(oTest) -yTest);
         
         pl.figure(1);
-        t = pl.plot(xTrain, yTrain, 'go');
-        o = pl.plot(xTrain, oTrain, 'r-');
+        t = pl.plot(xTrain, yTrain, 'go', label="train data");
+        o = pl.plot(xTrain, oTrain, 'r-', label="predicted data");
         pl.legend((t, o), ("target", "predicted"));
-        pl.title('Polynomial Regression train set with K=' + str(K));
+        pl.title('Polynomial Regression train set with degree ' + str(K-1));
 
         pl.figure(2);
-        t = pl.plot(xTest, yTest, 'go');
-        o = pl.plot(xTest, oTest, 'rx');
-        pl.legend((t,o), ("target", "predicted"));
-        pl.title('Polynomial Regression test set with K=' + str(K));
+        t = pl.plot(xTest, yTest, 'go', label="test data");
+        o = pl.plot(xTest, oTest, 'ro', label="predicted");
+        pl.legend();
+        pl.title('Polynomial Regression test set with degree ' + str(K-1));
 
-        pl.figure(K+1);
-        etr = pl.plot(kList, errorTrain, 'gx');
-        etst = pl.plot(kList, errorTest, 'rx');
-        pl.legend((etr, etst), ("train error", "test error"));
-        pl.title('Least Square Error');
+        #pl.figure(K+1);
+        #etr = pl.plot(kList, errorTrain, 'gx');
+        #etst = pl.plot(kList, errorTest, 'rx');
+        #pl.legend((etr, etst), ("train error", "test error"));
+        #pl.title('Least Square Error');
     pl.show();
