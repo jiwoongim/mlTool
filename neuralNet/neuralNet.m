@@ -1,5 +1,3 @@
-%MNIST data can be downloaded from yann.lecun.com/exdb/mnist
-
 clear;
 loadData;
 
@@ -21,6 +19,7 @@ if start,
     %init random weights from normal distribution
     W_inphid = randn(D,numHid);
     W_hidout = randn(numHid,T);
+
     start = 0;
     classErrTot =[];
     crossEntTot =[];
@@ -34,9 +33,6 @@ end
 
 hidbias = randn(1,numHid);%0.5.* ones(1,numHid);
 ybias = randn(1,T);%0.5.*ones(1,T);
-
-%hidbias = 0.5.* ones(1,numHid);
-%ybias = 0.5.*ones(1,T);
 
 for i=1:maxEpoch,
    
@@ -87,7 +83,7 @@ for i=1:maxEpoch,
     %storing error measure
     classErrL(i,1) = N - classErr;
     crossEntL(i,1) = crossEntropy;
-    classErrLtest(i,1) = N - classErrTest;
+    classErrLtest(i,1) = tN - classErrTest;
     crossEntLtest(i,1) = crossEntropyTest;
 
     %back propagation
@@ -121,18 +117,26 @@ save errorList classErrTot crossEntTot classErrTestTot crossEntTestTot;
 figure(1);
 plot(crossEntTot);
 title(sprintf('Cross Entropy Error on Training Data'));
+legend(sprintf('min vale of %d\n final value of %d', min(crossEntTot), ...
+           crossEntTot(i)));
 
 figure(2);
 plot(crossEntTestTot);
 title(sprintf('Cross Entropy Error on Test Data'));
+legend(sprintf('min vale of %d\n final value of %d', min(crossEntTestTot),...
+            crossEntTestTot(i)));
 
 figure(3);
 plot(classErrTot);
 title(sprintf('Classification Error on Training Data'));
+legend(sprintf('min value of %d\n final value of %d', min(classErrTot), ...
+                    classErrTot(i)));
 
 figure(4);
 plot(classErrTestTot);
-title(sprintf('Classification Entropy Error on Test Data'));
+title(sprintf('Classification Error on Test Data'));
+legend(sprintf('min value of %d\n final value of %d', min(classErrTestTot), ...
+                    classErrTestTot(i)));
 
 
 
