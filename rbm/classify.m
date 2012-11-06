@@ -1,5 +1,4 @@
-clear;
-loadData;
+%clear;
 
 %%%
 % N - number of data
@@ -12,7 +11,7 @@ loadData;
 start = 0;
 %initial weights
 
-rbm;
+%rbm;
 W_hidout = randn(numHid,T);
 eps_hidout = randn(numHid,T);
 eps_bias = randn(1,T);
@@ -21,7 +20,7 @@ ybias = randn(1,T);%0.5.*ones(1,T);
 
 
 %init
-maxEpoch = 50; %maximum epoch
+maxEpoch = 70; %maximum epoch
 classErrL = zeros(maxEpoch,1);
 crossEntL = zeros(maxEpoch,1);
 classErrTot =[];

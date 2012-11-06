@@ -1,5 +1,4 @@
 clear;
-loadData;
 
 %%%
 % N - number of data
@@ -10,11 +9,13 @@ loadData;
 
 %init
 tiny = exp(-100);
-epsilon = 0.005;  %Learning rate
+epsilon = 0.001;  %Learning rate
 fmomentum = 0.9;
-maxEpoch = 25; %maximum epoch
+maxEpoch = 500; %maximum epoch
 classErrL = zeros(maxEpoch,1);
 crossEntL = zeros(maxEpoch,1);
+normalize_data = 0;
+loadData;
 
 %Number of hidden units
 numHid =  400;
@@ -49,30 +50,29 @@ gbias_vis = 0;
 
 for i=1:maxEpoch,
 
-    
+    err = 0;       
+   
     for jbatch=1:numBatch,
         data = reshape(batchData(:,:,jbatch), batchSz, D);
         target = reshape(batchTarget(:,:,jbatch), batchSz, T);
         vis = data;
        
-        err = 0;       
         %Contrastive and divergence 5 times
         for cd=1:5,
         
-            %Positive phase  : clamping visible unit
             z = vis * W_inphid + repmat(hidbias, batchSz, 1);
             probHid = 1./(1+exp(-z));
             expHid = vis'*probHid; 
-
-            %Negative phase           
             hid = probHid > 0.5;
+
             y = hid * W_inphid' + repmat(visbias, batchSz, 1);
             probVis = 1./(1+exp(-y));
             expVis = hid'* probVis;
-            vis = probVis >= 0.5;
+            vis = probVis; %>= 0.5;
 
             %Saving <hv>_0
             if (cd == 1),
+                %Storing from Positive phase  
                 origHid = expHid;
                 origProbHid = probHid;
                 origVis = vis;
@@ -96,9 +96,10 @@ for i=1:maxEpoch,
         visbias = visbias + gbias_vis;
 
         %error compute
-        err = sum(sum( (data - vis).*(data-vis)));
-        fprintf('%d iteration,  %d batch done, error %f\n', i, jbatch, err);
+        err = err+ sum(sum( (data - vis).*(data-vis)));
     end
+    fprintf('%d iteration,  %d batch done, error %f\n', i, jbatch, err);
+
 end
 
 colormap(gray);
@@ -110,6 +111,7 @@ displayFaces(reshape(vis, 89,k,k));
 
 %im = reshape(vis, k,k);
 %image(im);
+save tmp W_inphid hidbias visbias
 
 
 

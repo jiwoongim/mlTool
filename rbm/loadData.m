@@ -47,6 +47,7 @@ data = data./ 255;
 T = size(targets,2);
 shuffleInd = randperm(N);
 
+
 %test info
 testdata = testdata./255;
 tN = floor(size(testdata,1))
@@ -55,6 +56,19 @@ shuffleIndtest = randperm(tN);
 testdata = testdata(shuffleIndtest,:);
 testtargets = testtargets(shuffleIndtest, :);
 
+
+%Normalize the data to have zero mean
+if (normalize_data),
+    mean_data = sum(sum(data)) / (N*D);
+    variance = var(data,0,1);
+    data = data - repmat(mean_data, N, D);
+    data = data./repmat(variance,N,1);
+    
+    mean_testdata = sum(sum(testdata))/(tN*D);
+    variance = var(testdata,0,1);
+    testdata = testdata - repmat(mean_testdata, tN,D);
+    testdata = testdata ./ repmat(variance, tN,1);
+end
 
 fprintf('Number of test set: %d \n', size(testdata,1));
 
