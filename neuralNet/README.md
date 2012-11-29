@@ -30,8 +30,8 @@ NN_mom_adpt_drop   0.071 | 0.0465
 
 ###NN (momentum + adaptive learning/connection)
 
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpTrain.jpg)
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpTest.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adptTrain.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adptTest.jpg)
 
 ###NN (momentum + adaptive learning/connection + dropouts)
  
