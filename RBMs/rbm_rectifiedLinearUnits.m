@@ -1,5 +1,4 @@
-%clear;
-
+%function [w_rbm hidbias visbias] = rbm_gaussianEnergy(batchData, numHid, epsilon, fmomentum, maxEpoch, start, dataInfo)
 %%%
 % N - number of data
 % D - dimension of the data
@@ -9,49 +8,30 @@
 
 %init
 tiny = exp(-100);
-epsilon = 0.0001;  %Learning rate
-fmomentum = 0.9;
-maxEpoch = 100; %maximum epoch
-classErrL = zeros(maxEpoch,1);
-crossEntL = zeros(maxEpoch,1);
-normalize_data = 0;
-loadData;
-
-%Number of hidden units
-numHid =  400;
-start = 1;
-
-
-%if start,
-%    %init random weights from normal distribution
-%    W_inphid = randn(D,numHid);
-%
-%    %Init Learning Rate on each connection of hiden to output unit
-%    eps_hidout = randn(numHid,T);
-%
-%    start = 0;
-%    classErrTot =[];
-%    crossEntTot =[];
-%    classErrTestTot =[];
-%    crossEntTestTot =[];
-%else,
-%    load mnist234_w;
-%    %load mnist234_b;
-%    load errorList;
-%    eps_bias = randn(1,T);
-%end
-%
-%hidbias = randn(1,numHid);%0.5.* ones(1,numHid);
-%visbias = randn(1,D);%0.5.* ones(1,numHid);
-
-%gW_inphid = 0;
+gW_inphid = 0;
 gbias_hid = 0; 
 gbias_vis = 0;
 
+
+if start,
+    %init random weights from normal distribution
+    W_inphid = randn(D,numHid);
+    hidbias = randn(1,numHid);%0.5.* ones(1,numHid);
+    visbias = randn(1,D);%0.5.* ones(1,numHid);
+
+    %Init Learning Rate on each connection of hiden to output unit
+    eps_hidout = randn(numHid,T);
+else,
+    load mnist234_w;
+    %load mnist234_b;
+    load errorList;
+    eps_bias = randn(1,T);
+    
+end
+
 for i=1:maxEpoch,
 
-    err = 0;       
-   
+    err = 0;          
     for jbatch=1:numBatch,
         data = reshape(batchData(:,:,jbatch), batchSz, D);
         target = reshape(batchTarget(:,:,jbatch), batchSz, T);
@@ -66,7 +46,7 @@ for i=1:maxEpoch,
             expHid = vis'*probHid; 
 
             %Negative phase           
-            hid = probHid >0.5;
+            hid = probHid >rand(size(probHid));
             y = hid * W_inphid' + repmat(visbias, batchSz, 1);
             probVis = max(log(1+exp(y)),0);%+randn(batchSz, D))), 0); 
             expVis = hid'* probVis;
@@ -79,7 +59,10 @@ for i=1:maxEpoch,
                 origVis = vis;
             end
         end
-        
+        z = vis * W_inphid + repmat(hidbias, batchSz, 1);
+        probHid = 1./(1+exp(-z));
+        expHid = vis'*probHid; 
+
         if (i < 10),
             momentum = 0.5;
         end
@@ -112,7 +95,7 @@ displayFaces(reshape(vis, 89,k,k));
 
 %im = reshape(vis, k,k);
 %image(im);
-
+end
 
 
 

@@ -1,97 +1,60 @@
-clear;
-
+function [w_rbm hidbias visbias] = rbm(batchData, numHid, epsilon, fmomentum, maxEpoch, start, dataInfo)
 %%%
 % N - number of data
 % D - dimension of the data
 % numBatch - number of batch
-% W_inphid - weight frmo input to hidden layer
+% w_rbm - weight frmo input to hidden layer
 %%% 
 
 %init
 tiny = exp(-100);
-epsilon = 0.001;  %Learning rate
-fmomentum = 0.9;
-maxEpoch = 500; %maximum epoch
-classErrL = zeros(maxEpoch,1);
-crossEntL = zeros(maxEpoch,1);
 normalize_data = 0;
-loadData;
-
-%Number of hidden units
-numHid =  400;
-start = 1;
-
+D = size(batchData,2);
+batchSz = dataInfo.batchSz;
+numBatch = dataInfo.numBatch;
 
 if start,
     %init random weights from normal distribution
-    W_inphid = randn(D,numHid);
-
-    %Init Learning Rate on each connection of hiden to output unit
-    eps_hidout = randn(numHid,T);
-
-    start = 0;
-    classErrTot =[];
-    crossEntTot =[];
-    classErrTestTot =[];
-    crossEntTestTot =[];
+    w_rbm = randn(D,numHid) * 0.1;
 else,
     load mnist234_w;
     %load mnist234_b;
     load errorList;
-    eps_bias = randn(1,T);
+    eps_bias = rand(1,T) * 0.1;
 end
 
 hidbias = randn(1,numHid);%0.5.* ones(1,numHid);
 visbias = randn(1,D);%0.5.* ones(1,numHid);
 
-gW_inphid = 0;
+momentum = 0.5;
+gw_rbm = 0;
 gbias_hid = 0; 
 gbias_vis = 0;
-
+numCD = 1;
 for i=1:maxEpoch,
 
     err = 0;       
    
     for jbatch=1:numBatch,
         data = reshape(batchData(:,:,jbatch), batchSz, D);
-        target = reshape(batchTarget(:,:,jbatch), batchSz, T);
         vis = data;
        
-        %Contrastive and divergence 5 times
-        for cd=1:5,
-        
-            z = vis * W_inphid + repmat(hidbias, batchSz, 1);
-            probHid = 1./(1+exp(-z));
-            expHid = vis'*probHid; 
-            hid = probHid > 0.5;
-
-            y = hid * W_inphid' + repmat(visbias, batchSz, 1);
-            probVis = 1./(1+exp(-y));
-            expVis = hid'* probVis;
-            vis = probVis; %>= 0.5;
-
-            %Saving <hv>_0
-            if (cd == 1),
-                %Storing from Positive phase  
-                origHid = expHid;
-                origProbHid = probHid;
-                origVis = vis;
-            end
-        end
-        
-        if (i < 10),
-            momentum = 0.5;
+        %Contrastive and divergence 1times in the beginning and 
+        %5 times later stage
+        [dEdw_rbm, dbiasHid, dbiasVis] = contrastive_divergence(numCD, w_rbm, hidbias, visbias, batchSz, vis);
+              
+        %Converting momentum to 0
+        if (i > maxEpoch/3),
+            fmomentum = momentum;
+            numCD = 5;
         end
 
         %Updating weights;
-        dEdW_inphid = (origHid - expHid)/batchSz;
-        dbiasHid = (sum(origProbHid) - sum(probHid))/batchSz;
-        dbiasVis = (sum(origVis) - sum(vis))/batchSz;
-        gW_inphid = (momentum.*gW_inphid + epsilon.*dEdW_inphid);
+        gw_rbm = (momentum.*gw_rbm + epsilon.*dEdw_rbm);
         gbias_hid = (momentum.*gbias_hid + epsilon.*dbiasHid);
         gbias_vis = (momentum.*gbias_vis + epsilon.*dbiasVis);
        
-        W_inphid = W_inphid + gW_inphid;
+        w_rbm = w_rbm + gw_rbm;
         hidbias = hidbias + gbias_hid;
         visbias = visbias + gbias_vis;
 
@@ -99,7 +62,6 @@ for i=1:maxEpoch,
         err = err+ sum(sum( (data - vis).*(data-vis)));
     end
     fprintf('%d iteration,  %d batch done, error %f\n', i, jbatch, err);
-
 end
 
 colormap(gray);
@@ -111,10 +73,10 @@ displayFaces(reshape(vis, 89,k,k));
 
 %im = reshape(vis, k,k);
 %image(im);
-save tmp W_inphid hidbias visbias
+save W_hidout w_rbm hidbias visbias
 
 
-
+end
 
                 
 

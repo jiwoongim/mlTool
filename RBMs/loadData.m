@@ -41,6 +41,7 @@ targets = [target2; target3; target4];
 testtargets = [testtarget2; testtarget3; testtarget4];
 
 
+
 %make batch for train
 data = data./ 255;
 [N,D] = size(data);
@@ -58,6 +59,7 @@ testtargets = testtargets(shuffleIndtest, :);
 
 
 %Normalize the data to have zero mean
+normalize_data = 0;
 if (normalize_data),
     mean_data = sum(sum(data)) / (N*D);
     variance = var(data,0,1);
@@ -78,11 +80,23 @@ batchSz = floor(N/numBatch);
 batchdata = zeros(batchSz, D, numBatch);
 batchTarget = zeros(batchSz, T, numBatch);
 
+dataInfo.numBatch = numBatch;
+dataInfo.batchSz = batchSz;
+dataInfo.N =N;
+dataInfo.D =D;
+dataInfo.T = T;
+dataInfo.tN =tN;
+
+
 for i=1:numBatch,
     batchData(:,:,i) = data(shuffleInd((i-1)*batchSz+1:batchSz*i),:);
     batchTarget(:,:,i) = targets(shuffleInd((i-1)*batchSz+1:batchSz*i),:); 
 end;
 
+dataInfo.training = batchData;
+dataInfo.target = batchTarget;
+dataInfo.testing = testdata;
+dataInfo.testtargets = testtargets;
 fprintf('Initializing batch finished\n');
 
 

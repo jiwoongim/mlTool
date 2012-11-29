@@ -1,5 +1,4 @@
-clear;
-
+function [w_rbm hidbias visbias] = rbm_gaussianEnergy(batchData, numHid, epsilon, fmomentum, maxEpoch, start, dataInfo)
 %%%
 % N - number of data
 % D - dimension of the data
@@ -9,17 +8,12 @@ clear;
 
 %init
 tiny = exp(-100);
-epsilon = 0.001;  %Learning rate
-fmomentum = 0.9;
-maxEpoch = 100; %maximum epoch
-classErrL = zeros(maxEpoch,1);
-crossEntL = zeros(maxEpoch,1);
-normalize_data = 0;
-loadData;
-
-%Number of hidden units
-numHid =  400;
-start = 1;
+gW_inphid = 0;
+gbias_hid = 0; 
+gbias_vis = 0;
+ginvVar = 0;
+std_data = var(data,0,1) .* ones(1,D);
+%std_data = 0.5 .* ones(1, D);
 
 
 if start,
@@ -28,31 +22,14 @@ if start,
 
     %Init Learning Rate on each connection of hiden to output unit
     eps_hidout = randn(numHid,T);
-
-    start = 0;
-    classErrTot =[];
-    crossEntTot =[];
-    classErrTestTot =[];
-    crossEntTestTot =[];
     hidbias = randn(1,numHid);%0.5.* ones(1,numHid);
     visbias = randn(1,D);%0.5.* ones(1,numHid);
 
 else,
     load mnist234_w;
     load mnist234_b;
-    %load mnist234_b;
-    %load errorList;
     eps_bias = randn(1,T);
 end
-
-
-gW_inphid = 0;
-gbias_hid = 0; 
-gbias_vis = 0;
-ginvVar = 0;
-
-std_data = var(data,0,1);
-std_data = 0.5 .* ones(1, D);
 
 for i=1:maxEpoch,
 
@@ -74,7 +51,7 @@ for i=1:maxEpoch,
             expHid = (vis./repmat(std_data,batchSz,1))'*probHid;
 
             %Negative phase           
-            hid = probHid > 0.5;
+            hid = probHid > rand(size(probHid));
             y = (hid*W_inphid') .* repmat(std_data,batchSz,1) + repmat(visbias,batchSz,1);
             probVis = y ;
             expVis = hid'* probVis;
@@ -88,6 +65,12 @@ for i=1:maxEpoch,
                 origVisbias = sum(vis,1)./(std_data.^2);
             end
         end
+        
+        z = vis * W_inphid + repmat(hidbias, batchSz, 1);
+        probHid = 1./(1+exp(-z));
+        expHid = (vis./repmat(std_data,batchSz,1))'*probHid;
+        hid = probHid > rand(size(probHid));
+
         %visbias = sum(vis,1)./(std_data.^2);
         if (i < 10),
             momentum = 0.5;
@@ -134,6 +117,7 @@ displayFaces(reshape(vis, 89,k,k));
 
 save mnist234_w W_inphid;
 save mnist234_b visbias hidbias;
+end
 
 
 

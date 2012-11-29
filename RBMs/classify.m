@@ -1,5 +1,5 @@
-%clear;
-
+function [W_inphid W_hidout hidbias ybias] = classify(dataInfo, W_inphid, ...
+                hidbias,  numHid, epsilon, eps_wd, fmomentum, maxEpoch)
 %%%
 % N - number of data
 % D - dimension of the data
@@ -8,19 +8,18 @@
 % W_hidout - weight from hidden units to output units
 %%%
 
-start = 0;
-%initial weights
+T = dataInfo.T; D = dataInfo.D; N =dataInfo.N;
+testdata = dataInfo.testing;
+testtargets = dataInfo.testtargets;
 
-%rbm;
-W_hidout = randn(numHid,T);
+%initial weights
+W_hidout = randn(numHid,T)*0.1;
 eps_hidout = randn(numHid,T);
 eps_bias = randn(1,T);
-ybias = randn(1,T);%0.5.*ones(1,T);
-
-
+ybias = randn(1,T)*0.1;%0.5.*ones(1,T);
 
 %init
-maxEpoch = 70; %maximum epoch
+tiny = exp(-100);
 classErrL = zeros(maxEpoch,1);
 crossEntL = zeros(maxEpoch,1);
 classErrTot =[];
@@ -30,9 +29,6 @@ crossEntTestTot =[];
 
 gW_hidout = 0;  gW_inphid = 0;
 gbias_out = 0;  gbias_hid = 0; 
-
-%learning rate
-epsilon = 0.001;  %Learning rate
 
 for i=1:maxEpoch,
  
@@ -45,25 +41,25 @@ for i=1:maxEpoch,
     hidacts = [];
     yacts = [];
     X = [];
-   
-    %init dropout 
-    dropoutProb = randn(numHid,1);
-    dropoutInd = find(dropoutProb > 0.5);
- 
-    for jbatch=1:numBatch,
-        data = reshape(batchData(:,:,jbatch), batchSz, D);
-        target = reshape(batchTarget(:,:,jbatch), batchSz, T);
+        
+    for jbatch=1:dataInfo.numBatch,
+        %init dropout 
+        dropoutProb = randn(numHid,1);
+        dropoutInd = find(dropoutProb > 0.5);
+
+        data = reshape(dataInfo.training(:,:,jbatch), dataInfo.batchSz, D);
+        target = reshape(dataInfo.target(:,:,jbatch), dataInfo.batchSz, T);
 
         %forward propagation on Training data
 
         %hidden layer
-        hidSum = data*W_inphid + repmat(hidbias,batchSz,1);
+        hidSum = data*W_inphid + repmat(hidbias,dataInfo.batchSz,1);
         hidX = 1./(1+ exp(-hidSum));
         hidacts = [hidacts; hidX];
 
         %output layer 
-        unnormalizedY = exp(- hidX*W_hidout - repmat(ybias,batchSz,1));
-        y = unnormalizedY ./ repmat(sum(unnormalizedY, 1), batchSz,1);
+        unnormalizedY = exp( hidX*W_hidout + repmat(ybias,dataInfo.batchSz,1));
+        y = unnormalizedY ./ repmat(sum(unnormalizedY, 1), dataInfo.batchSz,1);
         yacts = [yacts; y];
 
         %error train measure
@@ -72,14 +68,13 @@ for i=1:maxEpoch,
         classErr = classErr + length(find(I == tI));  %classification error
 
         crossEntropy = crossEntropy - sum(sum(target.*log(y+tiny)));    
-        resErr = [resErr; target-y];   %residual error   
+        resErr = [resErr; (y-target)/dataInfo.batchSz];   %residual error   
         X = [X; data];
 
         %back propagation
         [dEdW_hidout, dbiasOut, dEdW_inphid, dbiasHid, eps_hidout, eps_bias] =... 
-        backprop_adpt(X, resErr, target, yacts, hidacts, W_hidout, W_inphid, ...
-            gW_hidout, gbias_out, eps_hidout, eps_bias);
-
+        backprop_adpt(X, resErr, hidacts, W_hidout, W_inphid, ...
+            gW_hidout, gbias_out, eps_hidout, eps_bias, eps_wd);
 
         momentum = 0.5;
         if (floor(maxEpoch/2) < i), 
@@ -89,30 +84,31 @@ for i=1:maxEpoch,
         %No changes for droped out unit.
         dEdW_hidout(dropoutInd,:) = 0;
         dEdW_inphid(:, dropoutInd) = 0;
-        
+       
         %weight update
-        gW_hidout = (momentum.*gW_hidout - epsilon.*eps_hidout.*dEdW_hidout./batchSz);
-        gbias_out = (momentum.*gbias_out - epsilon.*eps_bias.*dbiasOut./batchSz);
-        gW_inphid = (momentum.*gW_inphid - epsilon.*dEdW_inphid./batchSz);
-        gbias_hid = (momentum.*gbias_hid - epsilon.*dbiasHid./batchSz);
-    
+        gW_hidout = (momentum.*gW_hidout - epsilon.*eps_hidout.*dEdW_hidout./dataInfo.batchSz);
+        gbias_out = (momentum.*gbias_out - epsilon.*eps_bias.*dbiasOut./dataInfo.batchSz);
+        gW_inphid = (momentum.*gW_inphid - epsilon.*dEdW_inphid./dataInfo.batchSz);
+        gbias_hid = (momentum.*gbias_hid - epsilon.*dbiasHid./dataInfo.batchSz);
+   
+
         W_hidout = W_hidout + gW_hidout;
         ybias = ybias + gbias_out;
         W_inphid = W_inphid + gW_inphid;
         hidbias = hidbias + gbias_hid;
      
-    end
+    end  
 
     %forward propagation onTesting data
-    hidSumt = testdata*W_inphid + repmat(hidbias, tN, 1);
+    hidSumt = testdata*W_inphid + repmat(hidbias, dataInfo.tN, 1);
     hidXt = 1./(1+exp(-hidSumt));
-    unnormalizeYt = exp(-hidXt*W_hidout./2 - repmat(ybias, tN, 1));
-    yt = unnormalizeYt ./ repmat(sum(unnormalizeYt, 1), tN, 1);
-    
+    unnormalizeYt = exp(+hidXt*W_hidout./2 + repmat(ybias, dataInfo.tN, 1));
+    yt = unnormalizeYt ./ repmat(sum(unnormalizeYt, 1), dataInfo.tN, 1);
+     
     %error test measure
     [yMaxt, testI] = max(yt');
     [tMaxtest, targettestI] = max(testtargets');
-    
+
     %classification error
     classErrTest = classErrTest + length(find(testI == targettestI));  
     crossEntropyTest = crossEntropyTest - sum(sum(testtargets.*log(yt+tiny)));    
@@ -121,12 +117,12 @@ for i=1:maxEpoch,
     %storing error measure
     classErrL(i,1) = N - classErr;
     crossEntL(i,1) = crossEntropy;
-    classErrLtest(i,1) = tN - classErrTest;
+    classErrLtest(i,1) = dataInfo.tN - classErrTest;
     crossEntLtest(i,1) = crossEntropyTest;
 
     fprintf('%d class error: %f cross entropy err: %f\n',i, N-classErr, crossEntropy);
     fprintf('%d test class error: %f cross class entropy err: %f\n', i,...
-                 tN-classErrTest, crossEntropyTest);
+                 dataInfo.tN-classErrTest, crossEntropyTest);
 end
 
 classErrTot = [classErrTot; classErrL];
