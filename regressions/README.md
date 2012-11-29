@@ -9,4 +9,11 @@ points, and selected random 40 points as train dat and rest of 20 points as test
 
 Here are two plots that was generated using polynomial regression.
 ![Training](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/polyRegTrain.png)
+![Testing](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/polyRegTest.png)
+
+
+##Bayesian Curve fitting with evidence approximation
+![Training](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/bayesianTrain.png)
+![Testing](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/bayesianTest.png)
+
 
