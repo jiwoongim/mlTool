@@ -23,9 +23,19 @@ NN_mom_adpt_drop   0.071 | 0.0465
 
 ## Classification Error Plot
 
-NN (just backpropagation)
-
+###NN (just backpropagation)
 
 ![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/bpropTrain.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/bpropTest.jpg)
+
+###NN (momentum + adaptive learning/connection)
+
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpTrain.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpTest.jpg)
+
+###NN (momentum + adaptive learning/connection + dropouts)
+ 
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpt_dropTrain.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpt_dropTest.jpg)
 
 
