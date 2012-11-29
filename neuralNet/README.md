@@ -39,3 +39,4 @@ NN_mom_adpt_drop   0.071 | 0.0465
 ![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpt_dropTest.jpg)
 
 
+The further details can be found at [neuralNet.pdf](https://github.com/jiwoongim/mlTool/blob/master/neuralNet/neuralNet.pdf)
