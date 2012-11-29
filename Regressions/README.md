@@ -8,14 +8,14 @@ points, and selected random 40 points as train dat and rest of 20 points as test
 ##Polynomial Regression
 
 Here are two plots that was generated using polynomial regression.
-![Training](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/polyRegTrain.png)
-![Testing](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/polyRegTest.png)
+![Training](https://raw.github.com/jiwoongim/mlTool/master/Regressions/images/polyRegTrain.png)
+![Testing](https://raw.github.com/jiwoongim/mlTool/master/Regressions/images/polyRegTest.png)
 
 
 ##Bayesian Curve fitting with evidence approximation
-![Training](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/bayesianTrain.png)
-![Testing](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/bayesianTest.png)
+![Training](https://raw.github.com/jiwoongim/mlTool/master/Regressions/images/bayesianTrain.png)
+![Testing](https://raw.github.com/jiwoongim/mlTool/master/Regressions/images/bayesianTest.png)
 
 The further derivations and details of two methods can be view at 
-[regressions.pdf](https://github.com/jiwoongim/mlTool/blob/master/regressions/regressions.pdf)
+[regressions.pdf](https://github.com/jiwoongim/mlTool/blob/master/Regressions/regressions.pdf)
 

@@ -25,18 +25,18 @@ NN_mom_adpt_drop   0.071 | 0.0465
 
 ###NN (just backpropagation)
 
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/bpropTrain.jpg)
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/bpropTest.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/Neural\ Net/image/bpropTrain.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/Neural\ Net/image/bpropTest.jpg)
 
 ###NN (momentum + adaptive learning/connection)
 
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adptTrain.jpg)
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adptTest.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/Neural\ Net/image/mom_adptTrain.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/Neural\ Net/image/mom_adptTest.jpg)
 
 ###NN (momentum + adaptive learning/connection + dropouts)
  
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpt_dropTrain.jpg)
-![backprop](https://raw.github.com/jiwoongim/mlTool/master/neuralNet/image/mom_adpt_dropTest.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/Neural\ Net/image/mom_adpt_dropTrain.jpg)
+![backprop](https://raw.github.com/jiwoongim/mlTool/master/Neural\ Net/image/mom_adpt_dropTest.jpg)
 
 
 The further details can be found at [neuralNet.pdf](https://github.com/jiwoongim/mlTool/blob/master/neuralNet/neuralNet.pdf)
