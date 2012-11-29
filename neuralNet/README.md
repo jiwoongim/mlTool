@@ -15,11 +15,15 @@ performance on the test set will get better.\\
 
 ###Results
 ```
-                       Train  Test
+                    Train   Test
 NN                | 0.102 | 0.073
 NN_mom_adpt       | 0.068 | 0.063
 NN_mom_adpt_drop  | 0.071 | 0.0465
 ```
 
-## Neural Network 
+## Classification Error Plot
+
+NN (just backpropagation)
+[backprop](https:raw.github.com/jiwoongim/mlTool/master/neuralNet/image/bpropTrain.jpg)
+
 
