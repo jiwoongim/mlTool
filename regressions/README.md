@@ -17,5 +17,5 @@ Here are two plots that was generated using polynomial regression.
 ![Testing](https://raw.github.com/jiwoongim/mlTool/master/regressions/images/bayesianTest.png)
 
 The further derivations and details of two methods can be view at 
-![regressions.pdf](https://github.com/jiwoongim/mlTool/blobmaster/regressions/regressions.pdf)
+[regressions.pdf](https://github.com/jiwoongim/mlTool/blobmaster/regressions/regressions.pdf)
 
