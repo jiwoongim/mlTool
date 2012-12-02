@@ -16,7 +16,6 @@ def basisX(xTrain, K):
             X[i,j] = pow(xTrain[j], i);
     return X
 
-
 def bayesianCurveFitting(xTrain, yTrain, K):
    
     #init
@@ -74,6 +73,9 @@ def run(xTrain, yTrain, tTrain, xTest, yTest, tTest, K):
 
     oTrain, mean = bayesianCurveFitting(xTrain, np.array(yTrain), K);
     
+    #evaluating train
+    errTrainBay = np.linalg.norm(np.array(yTrain)-oTrain);
+
     #graph
     pl.figure(5);
     t = pl.plot(xTrain, yTrain, 'go');
@@ -85,53 +87,22 @@ def run(xTrain, yTrain, tTrain, xTest, yTest, tTest, K):
     Basis = basisX(xTest, K); 
     N = Basis.shape[1];
     oTest = eval1(np.array(yTest), Basis.T, mean, N); 
+    
+    #evaluating test
+    errTestBay = np.linalg.norm(np.array(oTest) -yTest);
+
     pl.figure(6);
     t = pl.plot(xTest, yTest, 'go', label="test data");
-    o = pl.plot(xTest, oTest, 'ro-', label="predicted");
+    o = pl.plot(xTest, oTest, 'ro', label="predicted");
     #pl.legend((t,o), ("target", "predicted"));
     pl.title('Bayesian Regression test set with degree ' + str(K-1));
 
+    return errTrainBay, errTestBay;
 
 if __name__ == '__main__':
+    [X, Y, T] = dt.sample_poly3(100);
+    [xTrain, yTrain, tTrain, xTest, yTest, tTest] = util.sepTrainTest4Reg(50,50,\
+                X,T,Y);
 
-
-    K = 4;
-    kList = [3];
-    errorTrain = [0]*len(kList);
-    errorTest = [0]*len(kList);
-    
-    #data
-    [X, Y, T] = dt.sample_poly3(60);
-    [xTrain, yTrain, tTrain, xTest, yTest, tTest] = util.sepTrainTest4Reg(40,20,\
-            X,T,Y);
-
-    oTrain, mean = bayesianCurveFitting(xTrain, np.array(yTrain), 4);
-    
-    #graph
-    pl.figure(1);
-    t = pl.plot(xTrain, yTrain, 'go');
-    o = pl.plot(xTrain, oTrain, 'ro-');
-    #pl.plot(xTrain, oTrain2, 'bo-');
-    #pl.legend((t, o), ("target", "predicted"));
-    pl.ylim([-8,5]);
-    pl.title('Bayesian Regression train set with K=' + str(K));
-
-    Basis = basisX(xTest, K); 
-    N = Basis.shape[1];
-    oTest = eval1(np.array(yTest), Basis.T, mean, N); 
-    pl.figure(2);
-    t = pl.plot(xTest, yTest, 'go');
-    o = pl.plot(xTest, oTest, 'ro');
-    #pl.legend((t,o), ("target", "predicted"));
-    pl.ylim([-8,5]);
-    pl.title('Bayesian Regression test set with K=' + str(K));
-
-    #pl.figure(K+1);
-    #etr = pl.plot(kList, errorTrain, 'gx');
-    #etst = pl.plot(kList, errorTest, 'rx');
-    #pl.legend((etr, etst), ("train error", "test error"));
-    #pl.title('Least Square Error');
+    errTrainBay, errTestBay = bcf.run(xTrain, yTrain, tTrain, xTest, yTest, tTest, 4);
     pl.show();
-
-
-

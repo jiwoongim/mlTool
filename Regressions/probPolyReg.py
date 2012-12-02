@@ -119,56 +119,8 @@ def run(xTrain, yTrain, tTrain, xTest, yTest, tTest, K):
 
 
 if __name__ == '__main__':
-
-    K = 4;
-    kList = [3];
-    errorTrain = [0]*len(kList);
-    errorTest = [0]*len(kList);
-    
-    #data
-    [X, Y, T] = dt.sample_poly3(60);
-    [xTrain, yTrain, tTrain, xTest, yTest, tTest] = util.sepTrainTest4Reg(40,20,\
-            X,T,Y);
-
-    #maximum likelihood
-    w = polyRegression(K, xTrain, yTrain);  #weight computed 
-    #oTrain = evalPolynomReg(K, xTrain, w);  
-    #oTrain2 = oTrain;
-   
-    oTrain = evalPolynomReg(K, xTrain, w);  
-    oTrain2 = oTrain;
-    beta = updateVariance(oTrain, yTrain);
-    print beta
-
-    #evaluating train
-    oTrain = NPolynomReg(K, xTrain, yTrain, beta);
-    error = np.linalg.norm(np.array(yTrain)-oTrain);
-    
-    #evaluating test
-    oTest = NPolynomReg(K, xTest, yTest, beta);
-    errorTest[0] = np.linalg.norm(np.array(oTest) -yTest);    
-
-    #graph
-    pl.figure(1);
-    t = pl.plot(xTrain, yTrain, 'go', label="train data");
-    pl.plot(xTrain, oTrain2, 'bo-', label="curve fit");
-    #pl.legend((t, o), ("target", "predicted"));
-    #pl.ylim([-8,5]);
-    pl.title('Polynomial Regression train set with degree ' + str(K-1));
-
-    pl.figure(2);
-    t = pl.plot(xTest, yTest, 'go', label="test data");
-    o = pl.plot(xTest, oTest, 'rx', label="predicted");
-    #pl.legend((t,o), ("target", "predicted"));
-    pl.ylim([-8,5]);
-    pl.title('Polynomial Regression test set with degree ' + str(K-1));
-
-    #pl.figure(K+1);
-    #etr = pl.plot(kList, errorTrain, 'gx');
-    #etst = pl.plot(kList, errorTest, 'rx');
-    #pl.legend((etr, etst), ("train error", "test error"));
-    #pl.title('Least Square Error');
-    pl.show();
-
-
-
+    [X, Y, T] = dt.sample_poly3(100);
+    [xTrain, yTrain, tTrain, xTest, yTest, tTest] = util.sepTrainTest4Reg(50,50,\
+                X,T,Y);
+    errTrainPoly, errTestPoly = ppR.run(xTrain, yTrain, tTrain, xTest, yTest, tTest, 4);
+    pl.show()
