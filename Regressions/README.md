@@ -7,6 +7,13 @@ points, and selected random 40 points as train dat and rest of 20 points as test
 
 ##Polynomial Regression
 
+After running 10trials with different amount of train and test set.
+
+train/test   LSDE PolyReg on train | LSDE Bay on train | LSDE on PolyReg test | LSDE on Bay test
+50 / 50        7.0232 +- 0.1781       7.0237 +- 0.1780      7.1729 +- 0.2173      7.1701 +- 0.22 
+
+
+
 Here are two plots that was generated using polynomial regression.
 ![Training](https://raw.github.com/jiwoongim/mlTool/master/Regressions/images/polyRegTrain.png)
 ![Testing](https://raw.github.com/jiwoongim/mlTool/master/Regressions/images/polyRegTest.png)
