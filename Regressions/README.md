@@ -9,7 +9,7 @@ points, and selected random 40 points as train dat and rest of 20 points as test
 
 After running 10trials with different amount of train and test set.
 ```
-train/test |  LSDE PolyReg on train | LSDE Bay on train | LSDE on PolyReg test | LSDE on Bay test
+#Train/#Test |  LSDE PolyReg on Train | LSDE Bay on Train | LSDE on PolyReg Test | LSDE on Bay Test
 
 50 / 50    |    7.0232 +- 0.1781    |  7.0237 +- 0.1780 |    7.1729 +- 0.2173  |   7.1701 +- 0.22
 ```
