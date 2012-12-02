@@ -7,7 +7,7 @@ points, and selected random 40 points as train dat and rest of 20 points as test
 
 ##Polynomial Regression
 
-After running 10trials with different amount of train and test set.
+After running 8 trials with different amount of train and test set.
 ```
 #Train/#Test |  LSDE PolyReg on Train | LSDE Bay on Train | LSDE on PolyReg Test | LSDE on Bay Test
 30 / 70      |    5.4938 +- 0.4875    |  5.4950 +- 0.4873 |    8.7024 +- 0.8971  |   8.8004 +- 0.917
