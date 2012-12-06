@@ -10,13 +10,13 @@ I used 400 hidden units for all three models. From the generated images
 from each model, I could see their characters/behaviour.
 
 ### RBM
-[rbm] 
-
+[rbm] (https://raw.github.com/jiwoongim/mlTool/master/RBMs/image/gensubdata_rbm1.jpg)
 
 ### Gaussian RBM
+[grbm] (https://raw.github.com/jiwoongim/mlTool/master/RBMs/image/genSubdata_gauss.jpg)
 
 
 ### RBM with Rectified Linear Units
-
+[grbm] (https://raw.github.com/jiwoongim/mlTool/master/RBMs/image/genSubdata%20rlu.jpg)
 
 
