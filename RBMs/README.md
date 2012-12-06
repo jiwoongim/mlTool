@@ -15,8 +15,8 @@ from each model, I could see their characters/behaviour.
 ### Gaussian RBM
 ![grbm] (https://raw.github.com/jiwoongim/mlTool/master/RBMs/image/genSubdata_gauss.jpg)
 
-
 ### RBM with Rectified Linear Units
 ![grbm] (https://raw.github.com/jiwoongim/mlTool/master/RBMs/image/genSubdata%20rlu.jpg)
 
+More details can be found in [rbm.pdf] (https://github,.com/jiwoongim/mlTool/blob/master/RBMs/rbm.pdf)
 
