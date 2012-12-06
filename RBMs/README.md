@@ -21,7 +21,7 @@ More details can be found in [rbm.pdf] (https://github.com/jiwoongim/mlTool/blob
 ### 2. Discriminative RBM
 
 The discriminative RBM has interconnection between hidden layer with input layer, and also hidden layer with class label 
-layers. Similar to the diagram shown:
+layers. Similar to the diagram shown:\\
 
 
 ![drbm](https://raw.github.com/jiwoongim/mlTool/master/RBMs/image/classrbm.jpg)
