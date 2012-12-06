@@ -25,3 +25,4 @@ layers. Similar to the diagram shown:\\
 
 ![drbm](https://raw.github.com/jiwoongim/mlTool/master/RBMs/image/classrbm.jpg)
 
+however the results I found aren't satisfied yet...
