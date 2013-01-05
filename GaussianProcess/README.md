@@ -4,6 +4,9 @@ kernels are square exponetial, absolute expopential, brownian motion, and linear
 ```Implemented in matlab and python, but bug in python haven't solved yet.```
 
 ##Non-Stationary Kernel
+As you can see below that they are non stational kernel, since the plots all starts 
+from the same points.
+
 ### Linear
 ![linear](https://raw.github.com/jiwoongim/mlTool/master/GaussianProcess/iamge/linear_1.jpg)
 
