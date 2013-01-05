@@ -5,17 +5,17 @@ kernels are square exponetial, absolute expopential, brownian motion, and linear
 
 ##Non-Stationary Kernel
 ### Linear
-![linear](https://github.com/jiwoongim/mlTool/tree/master/GaussianProcess/iamge/linear_1.jpg)
+![linear](https://raw.github.com/jiwoongim/mlTool/master/GaussianProcess/iamge/linear_1.jpg)
 
 ### Brownian Motion 
-![BM](https://github.com/jiwoongim/mlTool/tree/master/GaussianProcess/iamge/WP_3.jpg)
+![BM](https://raw.github.com/jiwoongim/mlTool/master/GaussianProcess/iamge/WP_3.jpg)
 
 ##Stationary Kernel
 ### Square Exponential
-![SQR_EXP](https://github.com/jiwoongim/mlTool/tree/master/GaussianProcess/iamge/square_exp_1_0.2.jpg)
+![SQR_EXP](https://raw.github.com/jiwoongim/mlTool/master/GaussianProcess/iamge/square_exp_1_0.2.jpg)
 
 ### Absolute Exponential
-![ABS_EXP](https://github.com/jiwoongim/mlTool/tree/master/GaussianProcess/iamge/abs_exp_1.jpg)
+![ABS_EXP](https://raw.github.com/jiwoongim/mlTool/master/GaussianProcess/iamge/abs_exp_1.jpg)
 
 
 
