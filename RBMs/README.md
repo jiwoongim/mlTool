@@ -18,6 +18,16 @@ from each model, I could see their characters/behaviour.
 
 More details can be found in [rbm.pdf] (https://github.com/jiwoongim/mlTool/blob/master/RBMs/rbm.pdf)
 
+
+
+### Generating Face Image
+![originFace] (https://raw.github.com/jiwoongim/mlTool/master/RBMs/TO_face/original.jpg)
+Original Face Image
+![genFace1] (https://github.com/jiwoongim/mlTool/blob/master/RBMs/TO_face/rlu_2000.jpg)
+Generated Face using Rectified Linear Units for the visible layer.
+
+
+
 ### 2. Discriminative RBM
 
 The discriminative RBM has interconnection between hidden layer with input layer, and also hidden layer with class label 
